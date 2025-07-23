@@ -1,5 +1,6 @@
 from utils import scan_port
 import socket
+import threading
 
 while True:
     target = input("Enter target IP or domain or 'exit' to quit: ")
@@ -14,18 +15,28 @@ while True:
         continue
 
     print(f"\nScanning {target} from port {start_port} to {end_port}...\n")
-    found_open = False
 
-    for port in range(start_port, end_port + 1):
-        if scan_port(target, port):
-            found_open = True
+    threads = []
+    open_ports = []
+
+    def threaded_scan(ip, port):
+        if scan_port(ip, port):
             try:
                 service = socket.getservbyport(port)
             except:
                 service = "Unknown"
             print(f"Port {port} is OPEN ({service})")
+            open_ports.append(port)
 
-    if not found_open:
+    for port in range(start_port, end_port + 1):
+        thread = threading.Thread(target=threaded_scan, args=(target, port))
+        threads.append(thread)
+        thread.start()
+
+    for thread in threads:
+        thread.join()
+
+    if not open_ports:
         print("No open ports found in that range.")
 
 print("Exiting scanner. Goodbye!")
