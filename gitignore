@@ -1,0 +1,25 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# VS Code settings
+.vscode/
+
+# Environment files
+.env
+.venv/
+env/
+venv/
+
+# macOS/Linux system files
+.DS_Store
+Thumbs.db
+
+# Windows Python cache
+*.pyo
+
+# Other common build artifacts
+*.log
+*.bak
+*.swp
