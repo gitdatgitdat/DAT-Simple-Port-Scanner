@@ -1,4 +1,4 @@
-from utils import scan_port
+from utils import scan_port, validate_target, validate_ports
 import socket
 import threading
 
@@ -6,13 +6,16 @@ while True:
     target = input("Enter target IP or domain or 'exit' to quit: ")
     if target.lower() == "exit":
         break
-
-    try:
-        start_port = int(input("Enter start port: "))
-        end_port = int(input("Enter end port: "))
-    except ValueError:
-        print("Please enter valid port numbers.")
+    
+    if not validate_target(target):
+        print("Invalid target. Please enter a valid IP address or domain name.")
         continue
+    
+    ports = validate_ports(input("Enter start port: "), input("Enter end port: "))
+    if not ports:
+        continue
+
+    start_port, end_port = ports
 
     print(f"\nScanning {target} from port {start_port} to {end_port}...\n")
 
