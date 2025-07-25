@@ -3,7 +3,7 @@ import socket
 import threading
 
 while True:
-    target = input("Enter target IP or domain or 'exit' to quit: ")
+    target = input("\nEnter the target IP or domain. To quit, enter 'exit': ")
     if target.lower() == "exit":
         break
     
@@ -17,7 +17,9 @@ while True:
 
     start_port, end_port = ports
 
+    print("\n" + "=" * 40)
     print(f"\nScanning {target} from port {start_port} to {end_port}...\n")
+    print("=" * 40 + "\n")
 
     threads = []
     open_ports = []
@@ -28,8 +30,7 @@ while True:
                 service = socket.getservbyport(port)
             except:
                 service = "Unknown"
-            print(f"Port {port} is OPEN ({service})")
-            open_ports.append(port)
+            open_ports.append((port, service))
 
     for port in range(start_port, end_port + 1):
         thread = threading.Thread(target=threaded_scan, args=(target, port))
@@ -39,7 +40,14 @@ while True:
     for thread in threads:
         thread.join()
 
-    if not open_ports:
+    if open_ports:
+        print("Open Ports Found:\n")
+        for port, service in sorted(open_ports):
+            print(f"  • Port {port:<5} ({service})")
+
+    else:
         print("No open ports found in that range.")
+
+    print("\n" + "=" * 40 + "\n")
 
 print("Exiting scanner. Goodbye!")
