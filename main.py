@@ -2,6 +2,7 @@ from utils import scan_port, validate_target, validate_ports
 import socket
 import threading
 
+#Main loop. Enter the target, start port, and end port to begin scan.
 while True:
     target = input("\nEnter the target IP or domain. To quit, enter 'exit': ")
     if target.lower() == "exit":
@@ -17,6 +18,7 @@ while True:
 
     start_port, end_port = ports
 
+    #Header to display when scanning.
     print("\n" + "=" * 40)
     print(f"\nScanning {target} from port {start_port} to {end_port}...\n")
     print("=" * 40 + "\n")
@@ -24,6 +26,7 @@ while True:
     threads = []
     open_ports = []
 
+    #Threaded scan function that creates a thread for each port in the given range.
     def threaded_scan(ip, port):
         if scan_port(ip, port):
             try:
@@ -40,6 +43,7 @@ while True:
     for thread in threads:
         thread.join()
 
+    #Display results.
     if open_ports:
         print("Open Ports Found:\n")
         for port, service in sorted(open_ports):

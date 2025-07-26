@@ -2,6 +2,7 @@ import socket
 import ipaddress
 import re
 
+#Checks whether the target is a valid IP address or domain.
 def validate_target(target):
     try:
         ipaddress.ip_address(target)
@@ -15,6 +16,7 @@ def validate_target(target):
     
     return False
 
+#Checks and santizies the start and end ports.
 def validate_ports(start_port, end_port):
     try:
         start_port = int(start_port)
@@ -31,6 +33,7 @@ def validate_ports(start_port, end_port):
         print(f"Invalid port input: {e}")
         return None
 
+#Attempt a TCP connection to determine if a port is open.
 def scan_port(ip, port):
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
