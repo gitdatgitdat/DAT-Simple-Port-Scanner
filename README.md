@@ -34,9 +34,7 @@ Repeat or type exit to quit
 
 ## Example
 
-========================================
 Scanning google.com from port 1 to 1000...
-========================================
 
 Open Ports Found:
   • Port 9   (discard)
